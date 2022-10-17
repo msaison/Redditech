@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +55,7 @@ Widget? postTile({
         padding: const EdgeInsets.all(10.0),
         child: new ListTile(
           title: Text(postJson['title'], style: TextStyle(fontFamily: 'Noto'),),
-          subtitle: subTitlepost(text: postJson["post_hint"], postJson: postJson),
+          subtitle: subTitlepost(text: postJson["post_hint"] ?? 'Post_hint', postJson: postJson),
         ),
       ),
     ],

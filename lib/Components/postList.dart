@@ -15,24 +15,24 @@ class _PostListState extends State<PostList> {
   bool _firstLoadRunning = false;
   bool _loadMoreRunning = false;
 
-  int _index_subs = 0;
-  int _limit_subs = 10;
+  int indexSubs = 0;
+  int limitSubs = 10;
   List<Subreddit> _subs = [];
 
-  List<int> _index_posts = [];
-  int _limit_posts = 20;
+  List<int> indexPosts = [];
+  int limitPosts = 20;
   List _posts = [];
 
   late final String _sortBy;
   _PostListState(String sortBy) { this._sortBy = sortBy; }
 
   Future<List> _getSubscibedSubs() async {
-    Map<String, String> params = {'count': _index_subs.toString()};
-    final newSubs = await redditAuth.reddit!.user.subreddits(limit: _limit_subs, params: params).toList();
+    Map<String, String> params = {'count': indexSubs.toString()};
+    final newSubs = await redditAuth.reddit!.user.subreddits(limit: limitSubs, params: params).toList();
 
     _subs.addAll(newSubs);
-    _index_subs += newSubs.length;
-    newSubs.forEach((element) { _index_posts.add(0); });
+    indexSubs += newSubs.length;
+    newSubs.forEach((element) { indexPosts.add(0); });
 
     return (_subs);
   }
@@ -43,23 +43,23 @@ class _PostListState extends State<PostList> {
     List newPosts = [];
 
     _subs.forEach((sub) async {
-      Map<String, String> params = {'count': _index_posts[index].toString()};
+      Map<String, String> params = {'count': indexPosts[index].toString()};
       switch (_sortBy) {
         case "hot":
-          newPosts = await sub.hot(limit: _limit_posts, params: params).toList(); break;
+          newPosts = await sub.hot(limit: limitPosts, params: params).toList(); break;
         case "top":
-          newPosts = await sub.top(limit: _limit_posts, params: params).toList(); break;
+          newPosts = await sub.top(limit: limitPosts, params: params).toList(); break;
         case "newest":
-          newPosts = await sub.newest(limit: _limit_posts, params: params).toList(); break;
+          newPosts = await sub.newest(limit: limitPosts, params: params).toList(); break;
         default:
-          newPosts = await sub.newest(limit: _limit_posts, params: params).toList(); break;
+          newPosts = await sub.newest(limit: limitPosts, params: params).toList(); break;
       }
 
       _posts.addAll(newPosts);
-      _index_posts[index++] += newPosts.length;
+      indexPosts[index++] += newPosts.length;
     });
 
-    await _subs.first.newest(limit: _limit_posts).toList();
+    await _subs.first.newest(limit: limitPosts).toList();
     return (_posts);
   }
 

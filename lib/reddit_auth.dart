@@ -31,15 +31,19 @@ class RedditAuth {
       compactLogin: true,
     );
 
-    final result = await FlutterWebAuth.authenticate(url: authUrl.toString(), callbackUrlScheme: _callbackScheme);
+    try {
+      final result = await FlutterWebAuth.authenticate(url: authUrl.toString(), callbackUrlScheme: _callbackScheme);
+      final code = Uri.parse(result).queryParameters['code'];
 
-    final code = Uri.parse(result).queryParameters['code'];
+      await reddit!.auth.authorize(code!);
 
-    await reddit!.auth.authorize(code!);
+      saveCredentialsLocalStorage(reddit!.auth.credentials.toJson());
 
-    saveCredentialsLocalStorage(reddit!.auth.credentials.toJson());
-
-    return true;
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   bool loginLocalStorage() {

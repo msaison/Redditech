@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 
 Widget createHeader({
-  required String background,
+  required String? background,
   required NetworkImage avatar,
 }) {
   return DrawerHeader(
-    padding: EdgeInsets.symmetric(horizontal: 30),
-    margin: EdgeInsets.zero,
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        fit: BoxFit.fill,
-        image:  NetworkImage(background))),
-        child: CircleAvatar(
-          backgroundImage: avatar,
-          backgroundColor: Colors.white70,
-        )
-    );
+      padding: EdgeInsets.symmetric(horizontal: 30),
+      margin: EdgeInsets.zero,
+      decoration: background != null
+          ? BoxDecoration(image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(background)))
+          : BoxDecoration(color: Colors.white),
+      child: Container(
+        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white70, image: DecorationImage(image: avatar)),
+      ));
 }
 
 Widget createBanner({
@@ -26,15 +23,11 @@ Widget createBanner({
     return DrawerHeader(
         padding: EdgeInsets.symmetric(horizontal: 30),
         margin: EdgeInsets.zero,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.fill,
-                image: NetworkImage(background))),
+        decoration: BoxDecoration(image: DecorationImage(fit: BoxFit.fill, image: NetworkImage(background))),
         child: CircleAvatar(
           backgroundImage: avatar,
           backgroundColor: Colors.white70,
-        )
-    );
+        ));
   } else {
     return DrawerHeader(
         padding: EdgeInsets.symmetric(horizontal: 30),
@@ -42,12 +35,12 @@ Widget createBanner({
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.fill,
-                image: NetworkImage("https://i2.wp.com/squarepictures.tv/wp-content/uploads/2019/01/other-Blue-banner.jpg?ssl=1"))),
+                image: NetworkImage(
+                    "https://i2.wp.com/squarepictures.tv/wp-content/uploads/2019/01/other-Blue-banner.jpg?ssl=1"))),
         child: CircleAvatar(
           backgroundImage: avatar,
           backgroundColor: Colors.white70,
-        )
-    );
+        ));
   }
 }
 
@@ -58,13 +51,16 @@ Widget templateMenuItem({
 }) {
   final color = Colors.black;
   return ListTile(
-    leading:  Icon(icon, color: color),
-    title: Text(text, style: TextStyle(
-      color: color,
-      fontFamily: 'IBMPlex',
+    leading: Icon(icon, color: color),
+    title: Text(
+      text,
+      style: TextStyle(
+        color: color,
+        fontFamily: 'IBMPlex',
       ),
     ),
-    subtitle: Text(secondtext,
+    subtitle: Text(
+      secondtext,
       style: TextStyle(
         fontFamily: 'IBMPlex',
       ),
@@ -82,11 +78,6 @@ Text templateTxt({
   return Text(
     text,
     textAlign: TextAlign.center,
-    style: TextStyle(
-    fontSize: sizeFont,
-    fontFamily: 'Noto',
-    fontWeight: FontWeight.w300,
-    color: color
-    ),
+    style: TextStyle(fontSize: sizeFont, fontFamily: 'Noto', fontWeight: FontWeight.w300, color: color),
   );
 }
